@@ -1,8 +1,9 @@
 output "SomeOutput" {
   value = <<EOF
 
-        Private_EC2 has the following IP address   ${aws_instance.private_ec2[0].private_dns}
-        DB_EC2 has the following IP address   ${aws_instance.db[0].private_dns}
+        Private_EC2 has the following IP address  ssh ubuntu@${aws_instance.private_ec2[0].private_dns}
+        DB_EC2 has the following IP address ssh ubuntu@${aws_instance.db[0].private_dns}
+
     EOF
 }
 
