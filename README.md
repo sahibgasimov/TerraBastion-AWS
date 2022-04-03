@@ -1,4 +1,4 @@
-# bastion_host
+# This terraform code will create  bastion host on AWS 
 
 ![bastion_host](https://user-images.githubusercontent.com/100177153/156974704-4edc013e-e845-44f1-aa9b-915856723692.jpg)
 
