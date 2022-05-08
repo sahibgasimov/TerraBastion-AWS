@@ -38,3 +38,6 @@ asg  (Bastion_ASG)
 	  - auto-assign Public IP - No
     - sec group (SSH-Access-For-Bastion)
 
+
+
+(c) Sahib Gasimov
