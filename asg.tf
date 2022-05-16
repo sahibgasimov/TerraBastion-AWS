@@ -42,7 +42,7 @@ resource "aws_autoscaling_group" "asg" {
     tags = concat(
   [
     {
-      "Name" = "BastionHost"
+      Name = "BastionHost"
     }])
 
 }
