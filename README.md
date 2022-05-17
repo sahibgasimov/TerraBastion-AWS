@@ -1,4 +1,4 @@
-#### Using SSH-AGENT instead of copying private key 
+<details><summary><b> Using SSH-AGENT instead of copying private key </b></summary>
 An SSH agent is a program that keeps track of user’s identity keys and their pass phrases and can be configured with the following commands:
 
 #### Generate SSH keys
@@ -9,8 +9,8 @@ Once the keys have been generated and added to the keychain, it is possible to c
 
 #### Connect to the bastion host:
 ```ssh -A <bastion-ip-address>```
-
-#### SSH authentication agent does not automatically start when using it from a remote server. This result in the following error message:
+</details>
+<details><summary><b> SSH authentication agent does not automatically start when using it from a remote server. This result in the following error message:</b></summary>
 
     $ ssh-add ~/my-ssh-key.pem
     Could not open a connection to your authentication agent.
@@ -22,7 +22,9 @@ To fix it requires manually starting ssh-agent:
     $ ssh-add ~/my-ssh-key.pem
     Identity added: /home/user/my-ssh-key.pem (/home/user/my-ssh-key.pem)
 
-# This terraform code will create  bastion host on AWS 
+</details>	
+	
+### This terraform code will create  bastion host on AWS 
 
 ![bastion_host](https://user-images.githubusercontent.com/100177153/156974704-4edc013e-e845-44f1-aa9b-915856723692.jpg)
 
