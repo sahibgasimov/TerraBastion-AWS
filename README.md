@@ -1,3 +1,27 @@
+#### Using SSH-AGENT instead of copying private key 
+An SSH agent is a program that keeps track of user’s identity keys and their pass phrases and can be configured with the following commands:
+
+#### Generate SSH keys
+```ssh-keygen mykeypair```
+#### Add the keys to your keychain
+```ssh-add  mykeypair```
+Once the keys have been generated and added to the keychain, it is possible to connect to the bastion instance with SSH using the -A option. This enables forwarding and lets the local agent respond to the public-key challenge when connecting to instances from your bastion.
+
+#### Connect to the bastion host:
+```ssh -A <bastion-ip-address>```
+
+#### SSH authentication agent does not automatically start when using it from a remote server. This result in the following error message:
+
+    $ ssh-add ~/my-ssh-key.pem
+    Could not open a connection to your authentication agent.
+    
+To fix it requires manually starting ssh-agent:
+
+    $ eval `ssh-agent -s`
+    Agent pid 13442
+    $ ssh-add ~/my-ssh-key.pem
+    Identity added: /home/user/my-ssh-key.pem (/home/user/my-ssh-key.pem)
+
 # This terraform code will create  bastion host on AWS 
 
 ![bastion_host](https://user-images.githubusercontent.com/100177153/156974704-4edc013e-e845-44f1-aa9b-915856723692.jpg)
@@ -37,6 +61,8 @@ asg  (Bastion_ASG)
 	  - attach DBSubnet-B
 	  - auto-assign Public IP - No
     - sec group (SSH-Access-For-Bastion)
+
+
 
 
 
