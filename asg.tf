@@ -26,14 +26,6 @@ name_prefix = "sahib"
     capacity_reservation_preference = "open"
   }
 
-  cpu_options {
-    core_count       = 4
-    threads_per_core = 2
-  }
-  credit_specification {
-    cpu_credits = "standard"
-  }
-  ebs_optimized = true
   /* iam_instance_profile {
     name = "test"
   } */
@@ -45,10 +37,9 @@ name_prefix = "sahib"
     enabled = true
   }
   network_interfaces {
-    associate_public_ip_address = true
     network_interface_id =  aws_network_interface.bastion.id
     security_groups = ["${aws_security_group.ssh_access_for_bastion.id}"]
-    subnet_id = "${aws_subnet.public_1.id}"
+    /* subnet_id = "${aws_subnet.public_1.id}" */
   }
   tag_specifications {
     resource_type = "instance"
@@ -64,12 +55,12 @@ resource "aws_autoscaling_group" "asg" {
   name                 = "bastion_host"
   launch_template {
      id = aws_launch_template.as_template.id
-     version = "${aws_launch_template.as_template.latest_version}"
+    version = "$Latest"
   }
 
   min_size             = 1
   max_size             = 2
-  vpc_zone_identifier  = [aws_subnet.public_1.id, aws_subnet.public_2.id]
+  vpc_zone_identifier  = [aws_subnet.public_1.id]
 
 
   lifecycle {
