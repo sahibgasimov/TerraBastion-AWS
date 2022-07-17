@@ -48,6 +48,8 @@ nat-b attached to public subnet b - destination 0.0.0.0/0
 ```
 ### BASTION Host
 
+Bastion host is atatched to ASG.
+
 sec group (SSH-Access-For-Bastion) - inbound rules open ssh 22 port anywhere   0.0.0.0/0  (outbond nothing)
 asg launch configuration (Bastion_Host)
 asg  (Bastion_ASG)
