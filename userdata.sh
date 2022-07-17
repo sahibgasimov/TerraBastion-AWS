@@ -1,28 +1,25 @@
 #!/bin/bash
-# configure AWS
-# sudo apt-get update
-# sudo apt-get install awscli -y
-# sudo /bin/mkdir -p "$PATH/$DIR"
-# sudo chmod 777 ~/.aws/credentials
-# sudo mkdir ~/.aws/
-# sudo touch ~/.aws/credentials
-# sudo touch ~/.aws/credentials
-# sudo cat <<EOF > ~/.aws/credentials
-# aws_access_key_id = AKIAVXWQJLACQOCP2PDV 
-# aws_secret_access_key = pIheVBKXL08PPDxkG8Y3lqc68o
-# EOF
-# sudo cat <<EOF > ~/.aws/config
-# [default]
-# region = us-east-1
-# output = json
-# EOF
+# sudo apt-get install awscli
+INSTANCE_ID=$(curl -s http://169.254.169.254/latest/meta-data/instance-id)
+MAXWAIT=3
+ALLOC_ID=eipalloc-01146cbda91a9a197
+AWS_DEFAULT_REGION=us-east-1
 
-# # associate Elastic IP
-# # INSTANCE_ID=$(curl -s http://169.254.169.254/latest/meta-data/instance-id)
-# # ALLOCATION_ID=$(aws ec2 allocate-address --output table | perl -lne 'print $& if /(\d+\.){3}\d+/')
-# # aws ec2 associate-address --instance-id $INSTANCE_ID --allocation-id $ALLOCATION_ID --allow-reassociation
+# Make sure the EIP is free
+echo "Checking if EIP with ALLOC_ID[$ALLOC_ID] is free...."
+ISFREE=$(aws ec2 describe-addresses --allocation-ids $ALLOC_ID --query Addresses[].InstanceId --output text)
+STARTWAIT=$(date +%s)
+while [ ! -z "$ISFREE" ]; do
+    if [ "$(($(date +%s) - $STARTWAIT))" -gt $MAXWAIT ]; then
+        echo "WARNING: We waited 30 seconds, we're forcing it now."
+        ISFREE=""
+    else
+        echo "Waiting for EIP with ALLOC_ID[$ALLOC_ID] to become free...."
+        sleep 3
+        ISFREE=$(aws ec2 describe-addresses --allocation-ids $ALLOC_ID --query Addresses[].InstanceId --output text)
+    fi
+done
 
-sudo yum install httpd -y
-sudo echo "<h1>hey i am $(hostname -f)<h1>"| sudo tee /var/www/html/index.html
-sudo service httpd start
-sudo chkconfig httpd on
+# Now we can associate the address
+echo Running: aws ec2 associate-address --instance-id $INSTANCE_ID --allocation-id $ALLOC_ID --allow-reassociation}
+aws ec2 associate-address --instance-id $INSTANCE_ID --allocation-id $ALLOC_ID --allow-reassociation}

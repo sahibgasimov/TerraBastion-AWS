@@ -15,7 +15,8 @@ data "aws_ami" "ubuntu" {
 }
 
 resource "aws_launch_template" "as_template" {
-name_prefix = "sahib"
+  name_prefix = "sahib"
+
   block_device_mappings {
     device_name = "/dev/sda1"
     ebs {
@@ -25,49 +26,46 @@ name_prefix = "sahib"
   capacity_reservation_specification {
     capacity_reservation_preference = "open"
   }
+  placement {
+    availability_zone = "us-east-1a"
+  }
 
-  /* iam_instance_profile {
-    name = "test"
-  } */
-  image_id = data.aws_ami.ubuntu.id
+  image_id                             = data.aws_ami.ubuntu.id
   instance_initiated_shutdown_behavior = "terminate"
-  instance_type = "t2.micro"
-  key_name = aws_key_pair.key.key_name
+  instance_type                        = "t2.micro"
+  key_name                             = aws_key_pair.key.key_name
   monitoring {
     enabled = true
   }
-  network_interfaces {
-    network_interface_id =  aws_network_interface.bastion.id
-    security_groups = ["${aws_security_group.ssh_access_for_bastion.id}"]
-    /* subnet_id = "${aws_subnet.public_1.id}" */
-  }
+
   tag_specifications {
     resource_type = "instance"
     tags = {
       Name = "Bastion"
     }
   }
-/* user_data                   = "${file("./userdata.sh")}"   */
+  user_data                   = filebase64("./userdata.sh")
 }
 
 
 resource "aws_autoscaling_group" "asg" {
-  name                 = "bastion_host"
+  name = "bastion_host"
   launch_template {
-     id = aws_launch_template.as_template.id
+    id      = aws_launch_template.as_template.id
     version = "$Latest"
   }
-  desired_capacity = 1
-  min_size             = 1
-  max_size             = 2
-  vpc_zone_identifier  = [aws_subnet.public_1.id]
+  desired_capacity    = 1
+  min_size            = 1
+  max_size            = 1
+  vpc_zone_identifier = [aws_subnet.public_1.id]
 
-
+  # Required to redeploy without an outage.
   lifecycle {
     create_before_destroy = true
   }
-  
-  default_cooldown = 30
+
+  default_cooldown          = 30
+  health_check_grace_period = 300
 
   tag {
     key                 = "Name"

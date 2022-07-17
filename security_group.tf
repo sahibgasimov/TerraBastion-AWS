@@ -30,7 +30,7 @@ resource "aws_security_group" "ssh_access_for_bastion" {
     description = "Allow ping out from network"
   }
 
-# allow bastion download anything from internet 
+  # allow bastion download anything from internet 
   egress {
     from_port   = 0
     to_port     = 0
