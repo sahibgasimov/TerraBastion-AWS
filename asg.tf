@@ -47,8 +47,9 @@ name_prefix = "sahib"
   network_interfaces {
     associate_public_ip_address = true
     network_interface_id =  aws_network_interface.bastion.id
+    security_groups = ["${aws_security_group.ssh_access_for_bastion.id}"]
+    subnet_id = "${aws_subnet.public_1.id}"
   }
-  vpc_security_group_ids = [aws_security_group.ssh_access_for_bastion.id]
   tag_specifications {
     resource_type = "instance"
     tags = {
@@ -56,7 +57,6 @@ name_prefix = "sahib"
     }
   }
 /* user_data                   = "${file("./userdata.sh")}"   */
-
 }
 
 
@@ -64,7 +64,7 @@ resource "aws_autoscaling_group" "asg" {
   name                 = "bastion_host"
   launch_template {
      id = aws_launch_template.as_template.id
-     version = var.launch_template_version
+     version = "${aws_launch_template.as_template.latest_version}"
   }
 
   min_size             = 1
@@ -76,9 +76,6 @@ resource "aws_autoscaling_group" "asg" {
     create_before_destroy = true
   }
 
-    provisioner "local-exec" {
-    command = "./getips.sh"
-  }
 
   tag {
     key                 = "Name"

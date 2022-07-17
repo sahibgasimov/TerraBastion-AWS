@@ -25,5 +25,5 @@ variable "public_key" {
 
 
 variable "launch_template_version" {
-  default = "1"
+  default = ""
 }
