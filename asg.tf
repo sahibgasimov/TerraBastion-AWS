@@ -57,7 +57,7 @@ resource "aws_autoscaling_group" "asg" {
      id = aws_launch_template.as_template.id
     version = "$Latest"
   }
-
+  desired_capacity = 1
   min_size             = 1
   max_size             = 2
   vpc_zone_identifier  = [aws_subnet.public_1.id]
@@ -66,7 +66,8 @@ resource "aws_autoscaling_group" "asg" {
   lifecycle {
     create_before_destroy = true
   }
-
+  
+  default_cooldown = 30
 
   tag {
     key                 = "Name"
