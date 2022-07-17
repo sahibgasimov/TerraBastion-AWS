@@ -1,6 +1,6 @@
 variable "common_tags" {
   description = "Common Tags to apply to all resources"
-  type        = map
+  type        = map(any)
   default = {
     Owner       = "Sahib Gasimov"
     Project     = "Phoenix"
@@ -13,13 +13,17 @@ variable "common_tags" {
 
 variable "allow_ports" {
   description = "List of Ports to open for server"
-  type        = list
+  type        = list(any)
   default     = ["22"]
 }
 
 variable "public_key" {
   type        = string
   description = "Please provide your public_key"
-  default     = "~/.ssh/id_rsa.pub"
+  default     = "~/.ssh/ec2_id_rsa.pub"
 }
 
+
+variable "launch_template_version" {
+  default = "1"
+}

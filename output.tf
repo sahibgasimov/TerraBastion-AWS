@@ -3,8 +3,6 @@ output "SomeOutput" {
         
       eval `ssh-agent -s`
       ssh-add ~/.ssh/ec2_id_rsa.pem
-
-      ssh to Public EC2 Instance: ssh -A ubuntu@${aws_instance.public[0].public_ip}
       ssh from Public to Private EC2 ssh -A ubuntu@${aws_instance.private_ec2[0].private_ip}
       SSH from Private to DB EC2 instance ssh -A ubuntu@${aws_instance.db[0].private_ip}
     EOF

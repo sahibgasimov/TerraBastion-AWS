@@ -12,16 +12,16 @@ resource "aws_security_group" "ssh_access_for_bastion" {
     }
   }
 
-# Allow incoming ICMP echo ("ping") from any source via a security group
+  # Allow incoming ICMP echo ("ping") from any source via a security group
   ingress {
-    from_port = 8
-    to_port = 0
-    protocol = "icmp"
+    from_port   = 8
+    to_port     = 0
+    protocol    = "icmp"
     cidr_blocks = ["0.0.0.0/0"]
     description = "Allow ping inside vpc network 0.0.0.0/0"
   }
 
-# Allow outcoming ICMP echo ("ping") from any source via a security group
+  # Allow outcoming ICMP echo ("ping") from any source via a security group
   egress {
     from_port   = 8
     to_port     = 0
@@ -30,5 +30,12 @@ resource "aws_security_group" "ssh_access_for_bastion" {
     description = "Allow ping out from network"
   }
 
+# allow bastion download anything from internet 
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
   tags = merge(var.common_tags, { Name = "${var.common_tags["Environment"]} Server SecurityGroup" })
 }
