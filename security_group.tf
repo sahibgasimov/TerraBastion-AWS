@@ -11,7 +11,13 @@ resource "aws_security_group" "ssh_access_for_bastion" {
       cidr_blocks = ["0.0.0.0/0"]
     }
   }
-
+  ingress {
+    from_port   = 8
+    to_port     = 0
+    protocol    = "icmp"
+    cidr_blocks = ["0.0.0.0/0"]
+    description = "Allow ping inside vpc network 0.0.0.0/0"
+  }
   # Allow incoming ICMP echo ("ping") from any source via a security group
   ingress {
     from_port   = 8

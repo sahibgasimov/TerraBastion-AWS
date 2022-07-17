@@ -29,7 +29,7 @@ resource "aws_launch_template" "as_template" {
   placement {
     availability_zone = "us-east-1a"
   }
-
+vpc_security_group_ids =  [aws_security_group.ssh_access_for_bastion.id]
   image_id                             = data.aws_ami.ubuntu.id
   instance_initiated_shutdown_behavior = "terminate"
   instance_type                        = "t2.micro"
