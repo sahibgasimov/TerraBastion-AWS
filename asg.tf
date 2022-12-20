@@ -17,9 +17,6 @@ output "test" {
 
 resource "aws_launch_template" "as_template" {
   name_prefix = "sahib"
-  iam_instance_profile {
-    name = aws_iam_role.ssm_role.name
-  }
   block_device_mappings {
     device_name = "/dev/sda1"
     ebs {
@@ -75,11 +72,9 @@ resource "aws_autoscaling_group" "asg" {
     value               = "Bastion"
     propagate_at_launch = true
   }
-
 }
 
 resource "aws_key_pair" "key" {
   key_name   = "sahib"
   public_key = file(var.public_key)
 }
-
