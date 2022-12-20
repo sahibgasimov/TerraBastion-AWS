@@ -8,7 +8,6 @@ resource "aws_instance" "private_ec2" {
   key_name                    = aws_key_pair.key.key_name
   security_groups             = [aws_security_group.ssh_access_for_bastion.id]
   subnet_id                   = aws_subnet.private_1.id
-  iam_instance_profile = aws_iam_role.ssm_role.arn
   tags = {
     Name      = "Private_EC2 ${count.index + 1}"
     CreatedBy = "Engineer"
@@ -25,7 +24,6 @@ resource "aws_instance" "db" {
   key_name                    = aws_key_pair.key.key_name
   security_groups             = [aws_security_group.ssh_access_for_bastion.id]
   subnet_id                   = aws_subnet.db_1.id
-  iam_instance_profile = aws_iam_role.ssm_role.arn
   tags = {
     Name      = "DB_${count.index + 1}"
     CreatedBy = "Engineer"
