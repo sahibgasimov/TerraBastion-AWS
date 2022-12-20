@@ -17,7 +17,9 @@ output "test" {
 
 resource "aws_launch_template" "as_template" {
   name_prefix = "sahib"
-
+  iam_instance_profile {
+    name = aws_iam_role.ssm_role.name
+  }
   block_device_mappings {
     device_name = "/dev/sda1"
     ebs {
