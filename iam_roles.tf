@@ -17,6 +17,7 @@ EOF
 }
 
 resource "aws_iam_policy_attachment" "ssm_policy_attachment" {
+  name = "ssm"
   policy_arn = "arn:aws:iam::aws:policy/AmazonEC2RoleforSSM"
   roles      = [aws_iam_role.ssm_role.name]
 }
